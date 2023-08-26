@@ -1,47 +1,63 @@
 # Introduction
-* Inix is is a small INI file handling library that will allow you to read, store and write INI file informations.
-* The way INI stores the INI data is by using a custom structure called an INIstruct.
-* Inix comes with a lot of usefull functions to handle INIstruct, these functions allow you to Add, Delete, Modify and read sections and keys of a struct.
-* Both the INIstruct structure and the functions declaration, as well as a few usefull macros are defined in the header file.
-* Finally Inix will allow you to parse an INI file and store the data in an INIstruct and write to an INI file using the INIstruct's data.
+Inix is is a small INI file handling library that will allow
+reading, writing and storing of INI file information.
+
+The way Inix stores the INI data is by using a custom structure called an IniStruct.
+Inix comes with a lot of useful functions to handle IniStructs, and these functions
+allow you to add, delete, modify and read sections and elements of a struct.
+Both the IniStruct structure and the functions declaration, as well as a
+few useful macros are defined in the header file.
+
+Finally Inix will allow you to parse an INI file and store the data in an
+IniStruct and write to an INI file using the IniStruct's data.
+
 # List of functions
-Functions may or may not fail, some function can fail due to a faulty parameter (name too long, or presence of forbiden characters), or other things
-in which case it will return either 1 or NULL.
-A name must be composed of only lowercase latin letters and numbers, no specials character is allowed, not even space.
-When creating a section or an element, if the name of the section/element already exists in the file/section, it will fail and return 1/NULL;
+Functions may or may not fail. Some functions can fail due to a faulty parameter
+(name too long, or the presence of forbidden characters), or other things in which
+case it will return either 1 or NULL.
 
-* IniStruct *IniMake(name)      // Takes the structure name as an argument then creates a mallocated INIstruct with the given name and returns it's address.
-* void IniClear(ini)            // Takes a pointer to a INIstruct and free it then give it the adress of a new struct.
-* void IniEnd(ini)              // Takes a pointer to a INIstruct and free it.
+A name must be composed of only lowercase latin letters and numbers,
+no special characters are allowed, including spaces.
+When creating a section or an element, if the name of the section/element
+already exists in the file/section, it will fail and return 1/NULL;
 
-* int IniAddSect(ini, sect_name)                         // Takes a pointer to an INIstruct and add a section to it with the given name.
-* int IniAddElem(ini, sect_name, key, value)             // Takes a pointer to an INIstruct and add an element to the given section in the struct.
-* int IniDelSect(ini, sect_name)                         // Takes a pointer to an INIstruct and delete the given section.
-* int IniDelElem(ini, sect_name, key)                    // Takes a pointer to an INIstruct and delete the given element in the given section.
-* int IniModSect(ini, sect_name, new_sect_name)          // Takes a pointer to an INIstruct and modify the name of the section.
-* int IniModElemKey(ini, sect_name, old_key, new_key)    // Takes a pointer to an INIstruct and mofify a key in a given section.
-* int IniModElemValue(ini, sect_name, key, new_value)    // Takes a pointer to an INIstruct and modify a value of a given key in a given section.
-* char *IniReadElem(ini, sect_name, key)                 // Takes a pointer to an INIstruct and returns the value of a given key in a given section.
+IniStruct *IniMake(char *name);   /* Returns a pointer to a new IniStruct */
+void IniEnd(IniStruct *ini);      /* Frees the given IniStruct */
+void IniClear(IniStruct *ini);    /* Resets the given IniStruct */
 
-* void IniListAll(ini)      // Takes a pointer to an INIstruct and list everything (excluding the global section).
-* int IniListSect(ini)      // Takes a pointer to an INIstruct and list eveything within a given section.
+int   IniAddSect(IniStruct *ini, char *sect);                                  /* Adds a section to an IniStruct */
+int   IniAddElem(IniStruct *ini, char *sect, char *key, char *value);          /* Adds an element to a given section */
+int   IniDelSect(IniStruct *ini, char *sect);                                  /* Deletes a section from an IniStruct */
+int   IniDelElem(IniStruct *ini, char *sect, char *key);                       /* Deletes an element from a given section */
+int   IniModSect(IniStruct *ini, char *old, char *new);                        /* Modifies the name of a given section */
+int   IniModElemValue(IniStruct *ini, char *sect, char *oldkey, char *newkey); /* Modifies the key of a given element in a given section */
+int   IniModElemKey(IniStruct *ini, char *sect, char *oldkey, char *newkey);   /* Modifies the value of a given element in a given section */
+char *IniReadElem(IniStruct *ini, char *sect, char *name);                     /* Returns the value of an element in a given section */
 
-* int IniSeekSect(ini, sect_name)           // Takes a pointer to an INIstruct and returns true/1 if a section with the given name is found
-* int IniSeekElem(ini, sect_name, key)      // Takes a pointer to an INIstruct and returns true/1 if an element with the given key in a section is found.
+void IniListAll(IniStruct *ini);                /* List all elements and sections in a given IniStruct */
+int  IniListSect(IniStruct *ini, char *sect);   /* List all elements of a given section */
 
-* int IniAddGlob(ini, key, value)                     // Takes a pointer to an INIstruct and add an element to it's global section.
-* int IniDelGlob(ini, key)                            // Takes a pointer to an INIstruct and delete an element form it's global section.
-* int IniModGlobKey(ini, old_key, new_key)            // Takes a pointer to an INIstruct and modify the key of an element in the global section.
-* char *IniModGlobValue(ini, elem_key, value)     // Takes a pointer to an INIstruct and modify the value of a key in the glpbal section.
-* int IniReadGlob(ini, elem_key)                  // Takes a pointer to an INIstruct and returns the value of the specified key in the global section.
-* int IniListGlob(ini)                            // Takes a pointer to an INIstruct and list everything in it's global section.
-* 
-* IniStruct *IniReadFile(path, name)      // Takes the structure name as an argument and then reads an INI file in the specified path and return the INIstruct address.
-* void IniWriteFile(ini, path)      // Writes the content of an INIstruct on a ini file specified in the path argument.
+int IniSeekSect(IniStruct *ini, char *sect);            /* Checks if a given section exists in a given IniStruct */
+int IniSeekElem(IniStruct *ini, char *sect, char *key); /* Checks if a given key exists in a given section in a given IniStruct */
+
+int   IniAddGlob(IniStruct *ini, char *key, char *val);	     /* Adds a global element */
+int   IniDelGlob(IniStruct *ini, char *key);                 /* Deletes a global element */
+int   IniModGlobKey(IniStruct *ini, char *old, char *new);   /* Modifies a global element's key */
+int   IniModGlobValue(IniStruct *ini, char *key, char *val); /* Modifies a global element's value */
+char *IniReadGlob(IniStruct *ini, char *key);                /* Returns the value of a global element */
+int   IniListGlob(IniStruct *ini);                           /* Lists all elements of the global section */
+int   IniSeekGlob(IniStruct *ini, char *key);                /* Returns 1 if the given element exists in the global section, otherwise 0 */
+
+IniStruct *IniReadFile(char *pathname, char *structname); /* Reads the INI data from a file and returns a new IniStruct containing that data */
+void IniWriteFile(IniStruct *ini, char *pathname);        /* Writes the content of an IniStruct into an INI file */
 
 # Misc
-* The INI parser of Inix is a work in progress, it does handle error, and faulty INI syntax, to avoid undefined behavior please follow these rules:
+Inix is a work in progress; it does handle errors and faulty INI syntax. To avoid undefined behavior, please follow these rules:
     * Only use lowercase latin letters and numbers when creating a section, a key, or a value.
-    * Do not make a lines bigger than 200 digits, else undefined behavior could be could occur.
+    * Do not make a lines bigger than BUFFER_SIZE (default 200) digits, otherwise undefined behavior could occur.
     * Do not make 2 section with the same name in a file or 2 elements with the same key in the same section.
-* A few macros are available, INIX_VERSION = the version of inix, INIX_AUTHOR = the author of inix, INIX_LICENSE = the license of inix.
+
+A few macros are available:
+    * INIX_VERSION: the version of Inix
+	* INIX_AUTHOR:  the author of Inix
+	* INIX_LICENSE: the license of Inix.
