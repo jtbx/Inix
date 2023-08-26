@@ -18,7 +18,7 @@
 */
 
 #define INIX_VERSION 1.0;           /* The verion of the library */
-#define INIX_AUTHOR "PINGY BOY";    /* The author of the library */
+#define INIX_AUTHOR "PINGY BOY"     /* The author of the library */
 #define INIX_LICENSE "GPL3"         /* The license of the library */
 
 #define BUFFER_SIZE 200             /* Defines the maximum buffer size when parsing lines */
